@@ -13,9 +13,9 @@ print(f'{"GESTOR DE LIVROS":^56}')
 print("*" * 56)
 print(art.art)
 
+print(f'Bem-vindo/a ao GESTOR DE LIVROS, escolha uma das opções abaixo.',)
 
 while inicio:
-    print(f'Bem-vindo/a ao GESTOR DE LIVROS, escolha uma das opções abaixo.',)
     for itens, elementos in enumerate(opções, start=1):
         print(f'{itens}- {elementos}')
 
