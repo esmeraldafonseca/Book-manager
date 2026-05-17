@@ -1,21 +1,31 @@
+"""
+Projeto: Sistema de Gestão de Livros
+Autora: Esmeralda Fonseca
+Monitor: Sebilson Cristovão
+Descrição: Aplicação em Python para gerir uma coleção de livros com armazenamento em JSON.
+"""
+
 import funcionalidades
 import ficheiro
-import art
+import art #Arte ASCII
 
-inicio = True
+
+inicio = True #flag variable
 opções = ["Adicionar livro", "Listar todos os livros", 
           "Pesquisar livro por titulo", "Editar ", "Apagar lista" , "Sair"]
 livros = ficheiro.carregar_livros()
 
 
-print("*" * 56)
-print(f'{"GESTOR DE LIVROS":^56}')
-print("*" * 56)
+funcionalidades.cabecalho("GESTOR DE LIVROS")
 print(art.art)
 
+print(f'Bem-vindo/a ao seu GESTOR DE LIVROS, escolha uma das opções abaixo.',)
 
+#Menu principal
 while inicio:
-    print(f'Bem-vindo/a ao GESTOR DE LIVROS, escolha uma das opções abaixo.',)
+    print("Escolha uma das opções:")
+
+    #loop que mostra as opções do menu
     for itens, elementos in enumerate(opções, start=1):
         print(f'{itens}- {elementos}')
 
@@ -47,5 +57,7 @@ while inicio:
         else:
             print("")
             print("ERROR. Opção inexistente. Tente novamente ")
+    funcionalidades.limpar_tela()
+    
       
 

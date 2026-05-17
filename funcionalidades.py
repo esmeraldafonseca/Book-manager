@@ -1,38 +1,66 @@
 import json
 import ficheiro
 import pandas as pd
+from datetime import date
+
+livros = []
+ano_atual = date.today().year #Usa a biblioteca datatime para pegar o ano actual
+genero_literario = ["Romance", "Conto", "Novela", "Fabula", "Didatico"] 
 
 
-livros=[]
+def limpar_tela():
+    """
+    Limpa a tela do terminal atraves do comando clean que é roddo diretamente no os
+    """
+    import os
+    os.system('clear')
+
+
+
+def cabecalho(titulo):
+    """
+    Argumento: string 
+    Cria cabeçalhos estilizados e com o titulo centralizado 
+    """
+    titulo_cap = titulo.capitalize()
+    print("*" * 56)
+    print("*", end="")
+    print(f"{titulo_cap:^54}", end="")
+    print("*")
+    print("*" * 56)
 
 
 def adicionar_livros(livros):
-
     """
-    Criar um ficheiro para armazenar o titulo, autor, ano de publicação e genero
-    return: um ficheiro com os dados recolhidos
+    Argumento: lista/ dicionario/ tupla
+    Solicita ao utilizador os dados de um ou mais livros e adiciona-os à lista,
+    guardando as alterações no ficheiro JSON.
+    Retorna um ficheiro json com os dados recolhidos
     """
 
-
-    inicio = True
     
-
+    
+    inicio = True
     while inicio:
-        print("1- ADICIONAR LIVRO")
+        limpar_tela()
+        cabecalho("Adicionar livro")
         titulo = input("Titulo do livro: ")
         autor = input("Autor: ")
 
+        
         while True:
-
             ano_de_publicação = input("Ano de publicação: ")
             if ano_de_publicação.isdigit() and len(ano_de_publicação) == 4:
-                ano_de_publicação_int = int(ano_de_publicação)  
-                break              
+                ano_de_publicação_int = int(ano_de_publicação)
+                if ano_de_publicação_int <= ano_atual:
+                    break     
+                else:
+                    print("ERRROR. Data invalidade!")         
                 
             else:
                 print("ERROR. Valor invalido. Tente novamente.")
                 
-
+        
         while True:
 
             estado = input("Já leste esse livro?[S/N] ").upper()
@@ -45,8 +73,17 @@ def adicionar_livros(livros):
             else:
                 print("ERROR. Valor invalido. Tente S para sim e N para não")
             
-
-        genero = input("Genero literario: ")
+        
+        while True:
+            print("Genero literario:")
+            for i in genero_literario:
+                print(f"    -{i}")
+            genero = input("Digite a sua escolha: ").strip() .capitalize
+            if genero not in genero_literario:
+                print("ERROR. Opção invalida, tente uma das opções disponiveis.")
+            else:
+                genero = genero.title()
+                break
 
         livro ={"Titulo": titulo,
                     "Autor": autor,
@@ -57,6 +94,7 @@ def adicionar_livros(livros):
         livros.append(livro)
         ficheiro.criar_livro(livros)
 
+        
         while True: 
             condição = input("Quer adicionar mais um livro?[S/N]").upper()
            
@@ -68,35 +106,116 @@ def adicionar_livros(livros):
             else:
                 print("ERROR. Valor invalido. Tente S para sim e N para não")
     
-                  
+                 
 def limpar_lista(livros):
-    
+    """
+    Argmento: lista/ dicionario/ tupla
+    Retorna uma lista vazia
+    """
+
+    limpar_tela()
+    cabecalho("Limpar lista")
     condicao = input("Tens a certeza que queres eliminar a tua lista de livros?\n Essa acção é IRRVERSIVEL[S/N]").upper()
     
     if condicao.strip() == "S":
         livros.clear()
         with open("livros.json", "w", encoding="utf-8") as ficheiro:
-            json.dump([], ficheiro, indent=4)
+            json.dump([], ficheiro, indent=4) #verficar se a lista já está vazia, caso sim informar ao usuario,
     
 
 def editar_livro(livros):
-    ...
+    """
+    Argumento: livros (list): Lista de dicionários contendo os dados dos livros.
+    Mostra todos os livros cadastrados e permite ao utilizador
+    selecionar qual deseja editar.
+    """
 
-def pesquisar_livro(livros):
-
+    #Verifica se existem livros cadastrados
     if not livros:
-        print("Não existem livros. Adiciona primeiro.")
+        print("Não existem livros para editar.")
         return
 
-    titulo = input(f"Digite o titulo do livro que pretendes encontrar: ").upper()
-    for livro in livros:
-        if titulo in livro["Titulo"]:
-            print(f"{livro}: {livros}")
-        else:
-            print(f"ERROR.O livro com o titulo {titulo}, não foi encontrar. Tente novamente.")
+    limpar_tela()
+    cabecalho("Editar livro")
 
+    #Mostra a lista numerada de livros
+    print("Livros disponíveis:\n")
+    for indice, livro in enumerate(livros, start=1):
+        print(f"{indice} - {livro['Titulo']} ({livro['Autor']})")
+
+    #Solicita ao utilizador o número do livro a editar
+    while True:
+        escolha = input("\nDigite o número do livro que deseja editar: ").strip()
+
+        if not escolha.isdigit():
+            print("ERROR. Digite apenas números.")
+            continue
+
+        escolha = int(escolha)
+
+        if 1 <= escolha <= len(livros):
+            break
+        else:
+            print("ERROR. Número inválido. Escolha um livro da lista.")
+
+    #Obtém o livro selecionado
+    livro = livros[escolha - 1]
+
+    print("\nLivro selecionado:")
+    print(f"Título: {livro['Titulo']}")
+    print(f"Autor: {livro['Autor']}")
+    print(f"Ano de publicação: {livro['Ano de publicacao']}")
+    print(f"Género literário: {livro['Genero literario']}")
+    print(f"Estado: {'Lido' if livro['Estado'] else 'Não lido'}")
+
+    
+    novo_titulo = input(
+        "\nDigite o novo título (pressione Enter para manter o atual): "
+    ).strip()
+
+    if novo_titulo:
+        livro["Titulo"] = novo_titulo
+
+    
+    ficheiro.criar_livro(livros)
+
+    print("\nLivro atualizado com sucesso.")
+
+
+
+def pesquisar_livro(livros):
+    """
+    Argumento: lista/ dicionario/ tupla
+    Pergunta ao usuaria o titulo do livro que pretende encontrar e caso
+    esse titulo exitas, retorna uma lista com os restantes dados do livro em questão
+    """
+
+    limpar_tela()
+    cabecalho("Pesquisar livro")
+    titulo = input(f"Digite o titulo do livro que pretendes encontrar: ").upper()
+    encontrado = False
+    for livro in livros:
+        if titulo in livro["Titulo"].upper():
+            print(f"Livro encontrado: {livro["Titulo"]}")
+            encontrado = True
+
+        if not encontrado:
+            print("Não existem livros. Adiciona primeiro.")
+            return
+
+       
 def listar_livros(livros):
+    """
+    Argumento: lista/ dicionario/ tupla
+    Mostra os itens de livros em forma de tabela
+    Retorna uma tabela estilizada de todos os livros listados no ficheiro json
+    """
+
+    limpar_tela()
+    cabecalho("Listar livros")
     print(f'Os seus livros sao:')
     tabela = pd.DataFrame(livros)
     return print("\n"* 5, tabela, "\n"*10)
+
+
     
