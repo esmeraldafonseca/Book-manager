@@ -7,6 +7,7 @@ Descrição: Aplicação em Python para gerir uma coleção de livros com armaze
 
 import funcionalidades
 import ficheiro
+from rich import print
 import art #Arte ASCII
 
 

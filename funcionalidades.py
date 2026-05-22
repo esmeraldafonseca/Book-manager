@@ -78,7 +78,7 @@ def adicionar_livros(livros):
             print("Genero literario:")
             for i in genero_literario:
                 print(f"    -{i}")
-            genero = input("Digite a sua escolha: ").strip() .capitalize
+            genero = input("Digite a sua escolha: ").strip() .capitalize()
             if genero not in genero_literario:
                 print("ERROR. Opção invalida, tente uma das opções disponiveis.")
             else:
@@ -196,12 +196,12 @@ def pesquisar_livro(livros):
     encontrado = False
     for livro in livros:
         if titulo in livro["Titulo"].upper():
-            print(f"Livro encontrado: {livro["Titulo"]}")
+            print(f"Livro encontrado: {livro['Titulo']}")
             encontrado = True
 
-        if not encontrado:
-            print("Não existem livros. Adiciona primeiro.")
-            return
+    if not encontrado:
+        print("Não existem livros. Adiciona primeiro.")
+        return
 
        
 def listar_livros(livros):
@@ -213,9 +213,18 @@ def listar_livros(livros):
 
     limpar_tela()
     cabecalho("Listar livros")
+
+    if not livros:
+        print("Não existem livros cadastrados.")
+        return
+
     print(f'Os seus livros sao:')
     tabela = pd.DataFrame(livros)
-    return print("\n"* 5, tabela, "\n"*10)
+    print(tabela)
+
+    input("\nPressione ENTER para continuar...")
+    limpar_tela()
+        
 
 
     
