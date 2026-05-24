@@ -22,8 +22,9 @@ OPCOES = ["Adicionar livro", "Listar todos os livros",
 livros = ficheiro.carregar_livros()
 
 
-funcionalidades.cabecalho("GESTOR DE LIVROS")
 print(art.art)
+funcionalidades.cabecalho("GESTOR DE LIVROS")
+
 
 print(f'Bem-vindo/a ao seu GESTOR DE LIVROS, escolha uma das opções abaixo.',)
 
@@ -40,12 +41,16 @@ while inicio:
 
     if escolha == "":
         print(CAIXA4)
+        input("\nPressione ENTER para continuar...")
+        funcionalidades.limpar_tela()
     else:
 
         try:
             escolha_int = int(escolha)
         except ValueError:
             print(CAIXA3)
+            input("\nPressione ENTER para continuar...")
+    
             funcionalidades.limpar_tela()
             continue
         if escolha_int == 1:
@@ -62,10 +67,14 @@ while inicio:
             print("")
             
             print(CAIXA1)
+            input("\nPressione ENTER para continuar...")
+            funcionalidades.limpar_tela()
             inicio = False
         else:
             print("")
             print(CAIXA2)
+            input("\nPressione ENTER para continuar...")
+    
             funcionalidades.limpar_tela()
 
 
