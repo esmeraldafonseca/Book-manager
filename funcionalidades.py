@@ -1,11 +1,13 @@
 import json
 import ficheiro
 import pandas as pd
+from rich import print
+from rich.table import Table
 from datetime import date
 
 livros = []
 ano_atual = date.today().year #Usa a biblioteca datatime para pegar o ano actual
-genero_literario = ["Romance", "Conto", "Novela", "Fabula", "Didatico"] 
+GENERO_LITERARIO = ["Romance", "Conto", "Novela", "Fabula", "Didatico"] 
 
 
 def limpar_tela():
@@ -25,7 +27,7 @@ def cabecalho(titulo):
     titulo_cap = titulo.capitalize()
     print("*" * 56)
     print("*", end="")
-    print(f"{titulo_cap:^54}", end="")
+    print(f"[bold blue] {titulo_cap:^54}[/]", end="")
     print("*")
     print("*" * 56)
 
@@ -76,10 +78,10 @@ def adicionar_livros(livros):
         
         while True:
             print("Genero literario:")
-            for i in genero_literario:
+            for i in GENERO_LITERARIO:
                 print(f"    -{i}")
             genero = input("Digite a sua escolha: ").strip() .capitalize()
-            if genero not in genero_literario:
+            if genero not in GENERO_LITERARIO:
                 print("ERROR. Opção invalida, tente uma das opções disponiveis.")
             else:
                 genero = genero.title()
@@ -115,7 +117,7 @@ def limpar_lista(livros):
 
     limpar_tela()
     cabecalho("Limpar lista")
-    condicao = input("Tens a certeza que queres eliminar a tua lista de livros?\n Essa acção é IRRVERSIVEL[S/N]").upper()
+    condicao = input("Tens a certeza que queres eliminar a tua lista de livros?\nEssa acção é [bold]IRRVERSIVEL[/][S/N]").upper()
     
     if condicao.strip() == "S":
         livros.clear()
@@ -145,10 +147,10 @@ def editar_livro(livros):
 
     #Solicita ao utilizador o número do livro a editar
     while True:
-        escolha = input("\nDigite o número do livro que deseja editar: ").strip()
+        escolha = input("\nDigite o número do livro que deseja editar: ")
 
         if not escolha.isdigit():
-            print("ERROR. Digite apenas números.")
+            print("[bold red]ERROR.[/] Digite apenas números.")
             continue
 
         escolha = int(escolha)
@@ -156,7 +158,7 @@ def editar_livro(livros):
         if 1 <= escolha <= len(livros):
             break
         else:
-            print("ERROR. Número inválido. Escolha um livro da lista.")
+            print("[bold red]ERROR.[/] Número inválido. Escolha um livro da lista.")
 
     #Obtém o livro selecionado
     livro = livros[escolha - 1]
@@ -180,7 +182,7 @@ def editar_livro(livros):
     ficheiro.criar_livro(livros)
 
     print("\nLivro atualizado com sucesso.")
-
+    limpar_tela()
 
 
 def pesquisar_livro(livros):
@@ -198,10 +200,15 @@ def pesquisar_livro(livros):
         if titulo in livro["Titulo"].upper():
             print(f"Livro encontrado: {livro['Titulo']}")
             encontrado = True
+            input("\nPressione ENTER para continuar...")
+            limpar_tela()
 
     if not encontrado:
         print("Não existem livros. Adiciona primeiro.")
+        input("\nPressione ENTER para continuar...")
+        limpar_tela()
         return
+    
 
        
 def listar_livros(livros):
@@ -218,9 +225,17 @@ def listar_livros(livros):
         print("Não existem livros cadastrados.")
         return
 
-    print(f'Os seus livros sao:')
-    tabela = pd.DataFrame(livros)
-    print(tabela)
+    df = pd.DataFrame(livros)
+
+    table = Table(title="Livros")
+
+    for coluna in df.columns:
+        table.add_column(coluna)
+
+    for _, linha in df.iterrows():
+        table.add_row(*[str(valor) for valor in linha])
+
+    print(table)
 
     input("\nPressione ENTER para continuar...")
     limpar_tela()
