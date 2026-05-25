@@ -2,6 +2,7 @@ import json
 import ficheiro
 import pandas as pd
 from rich import print
+from rich.panel import Panel
 from rich.table import Table
 from datetime import date
 
@@ -17,6 +18,22 @@ def limpar_tela():
     import os
     os.system('clear')
 
+#Conjunto de funções que retornam mensagens de erros estilizadas
+def erro1():
+    CAIXA1 = Panel("[white]Obrigado/a pela preferencia, tenha um bom dia e boa leitua.[/] :gem_stone:", style="blue", width=30)
+    print(CAIXA1)
+
+def erro2():
+    CAIXA2 = Panel("[bold red]ERROR![/]. [white] Opção inexistente. Tente novamente [/]" , style="blue", width=30)
+    print(CAIXA2)
+
+def erro3():
+    CAIXA3 = Panel("[bold red]ERROR![/] [white] Valor invalido, por favor digite uma das opções validas([bold]NUMEROS[/])" , style="blue", width=30)
+    print(CAIXA3)
+
+def erro4():
+    CAIXA4 = Panel("[bold red]ERROR![/].[white]Campo vazio![/]" , style="blue", width=30)
+    print(CAIXA4)
 
 
 def cabecalho(titulo):
@@ -57,10 +74,10 @@ def adicionar_livros(livros):
                 if ano_de_publicação_int <= ano_atual:
                     break     
                 else:
-                    print("[bold red]ERROR.[/]Data invalidade!")         
+                    erro2()         
                 
             else:
-                print("[bold red]ERROR.[/] Valor invalido. Tente novamente.")
+                erro2
                 
         
         while True:
@@ -73,7 +90,7 @@ def adicionar_livros(livros):
                 lido = False
                 break
             else:
-                print("[bold red]ERROR.[/] Valor invalido. Tente S para sim e N para não")
+                erro2()
             
         
         while True:
@@ -82,7 +99,7 @@ def adicionar_livros(livros):
                 print(f"    -{i}")
             genero = input("Digite a sua escolha: ").strip() .capitalize()
             if genero not in GENERO_LITERARIO:
-                print("[bold red]ERROR.[/] Opção invalida, tente uma das opções disponiveis.")
+                erro2()
             else:
                 genero = genero.title()
                 break
@@ -108,7 +125,8 @@ def adicionar_livros(livros):
                 limpar_tela()
                 break
             else:
-                print("[bold red]ERROR.[/] Valor invalido. Tente S para sim e N para não")
+                erro3()
+
     
                  
 def limpar_lista(livros):
@@ -133,7 +151,8 @@ def limpar_lista(livros):
         limpar_tela()
         return
     else :
-        print("[bold red]ERROR.[/] Digite uma das opções validas")
+        erro3()
+
 
 def editar_livro(livros):
     """
@@ -160,7 +179,9 @@ def editar_livro(livros):
         escolha = input("\nDigite o número do livro que deseja editar: ")
 
         if not escolha.isdigit():
-            print("[bold red]ERROR.[/] Digite apenas números.")
+            erro3()
+
+
             continue
 
         escolha = int(escolha)
@@ -168,8 +189,8 @@ def editar_livro(livros):
         if 1 <= escolha <= len(livros):
             break
         else:
-            print("[bold red]ERROR.[/] Número inválido. Escolha um livro da lista.")
-
+            erro3()
+            
     #Obtém o livro selecionado
     livro = livros[escolha - 1]
 
