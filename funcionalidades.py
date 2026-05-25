@@ -16,6 +16,8 @@ def limpar_tela():
     Limpa a tela do terminal atraves do comando clean que é roddo diretamente no os
     """
     import os
+
+    input("\nPressione ENTER para continuar...")
     os.system('clear')
 
 #Conjunto de funções que retornam mensagens de erros estilizadas
@@ -121,7 +123,6 @@ def adicionar_livros(livros):
                 break
             elif condição == "N":
                 inicio = False
-                input("\nPressione ENTER para continuar...")
                 limpar_tela()
                 break
             else:
@@ -144,10 +145,9 @@ def limpar_lista(livros):
         with open("livros.json", "w", encoding="utf-8") as ficheiro:
             json.dump([], ficheiro, indent=4) #verficar se a lista já está vazia, caso sim informar ao usuario,
 
-        input("\nPressione ENTER para continuar...")
+        
         limpar_tela()
     elif condicao.strip() == "N":
-        input("\nPressione ENTER para continuar...")
         limpar_tela()
         return
     else :
@@ -231,12 +231,10 @@ def pesquisar_livro(livros):
         if titulo in livro["Titulo"].upper():
             print(f"Livro encontrado:\n     {livro['Titulo']} de {livro['Autor']} lançado em {livro['Ano de publicacao']}")
             encontrado = True
-            input("\nPressione ENTER para continuar...")
             limpar_tela()
 
     if not encontrado:
         print("Não existem livros. Adiciona primeiro.")
-        input("\nPressione ENTER para continuar...")
         limpar_tela()
         return
     
@@ -268,7 +266,6 @@ def listar_livros(livros):
 
     print(table)
 
-    input("\nPressione ENTER para continuar...")
     limpar_tela()
         
 

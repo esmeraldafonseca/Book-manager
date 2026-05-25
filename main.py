@@ -44,35 +44,35 @@ while inicio:
             escolha_int = int(escolha)
         except ValueError:
             funcionalidades.erro3()
-            input("\nPressione ENTER para continuar...")
     
             funcionalidades.limpar_tela()
             continue
 
+        match escolha_int:
+            case 1:
+                funcionalidades.adicionar_livros(livros)
+            case 2:
+                funcionalidades.listar_livros(livros)
+            case 3:
+                funcionalidades.pesquisar_livro(livros)
+            case 4:
+                funcionalidades.editar_livro(livros)
+            case 5:
+                funcionalidades.limpar_lista(livros)
+            case 6:
+                print("")
+                funcionalidades.erro1()
+                input("\nPressione ENTER para continuar...")
+                funcionalidades.limpar_tela()
+                inicio = False
+            case _:
+                print("")
+                funcionalidades.erro2()
+                input("\nPressione ENTER para continuar...")
+                funcionalidades.limpar_tela()
 
-
-        if escolha_int == 1:
-            funcionalidades.adicionar_livros(livros)
-        elif escolha_int == 2:
-            funcionalidades.listar_livros(livros)
-        elif escolha_int == 3:
-            funcionalidades.pesquisar_livro(livros)
-        elif escolha_int == 4:
-            funcionalidades.editar_livro(livros)
-        elif escolha_int == 5:
-            funcionalidades.limpar_lista(livros)
-        elif escolha_int == 6:
-            print("")
-            funcionalidades.erro1()
-            input("\nPressione ENTER para continuar...")
-            funcionalidades.limpar_tela()
-            inicio = False
-        else:
-            print("")
-            funcionalidades.erro2()
-            input("\nPressione ENTER para continuar...")
     
-            funcionalidades.limpar_tela()
+            
 
 
     
