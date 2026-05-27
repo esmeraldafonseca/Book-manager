@@ -17,14 +17,14 @@ OPCOES = ["Adicionar livro", "Listar todos os livros",
 livros = ficheiro.carregar_livros()
 
 
+
+
+print(f'Bem-vindo/a ao seu GESTOR DE LIVROS::',)
 print(art.art)
-funcionalidades.cabecalho("GESTOR DE LIVROS")
-
-
-print(f'Bem-vindo/a ao seu GESTOR DE LIVROS, escolha uma das opções abaixo.',)
 
 #Menu principal
 while inicio:
+    funcionalidades.cabecalho("GESTOR DE LIVROS")
     print("Escolha uma das opções:")
 
     #loop que mostra as opções do menu
@@ -34,42 +34,35 @@ while inicio:
 
     escolha = input("Digite a sua escolha: ").strip()
 
-    if escolha == "":
-        funcionalidades.erro4()
-        input("\nPressione ENTER para continuar...")
+
+    try:
+        escolha_int = int(escolha)
+    except ValueError:
+        funcionalidades.erro3()
         funcionalidades.limpar_tela()
-    else:
+        continue
 
-        try:
-            escolha_int = int(escolha)
-        except ValueError:
-            funcionalidades.erro3()
-    
+    match escolha_int:
+        case 1:
+            funcionalidades.adicionar_livros(livros)
+        case 2:
+            funcionalidades.listar_livros(livros)
+        case 3:
+            funcionalidades.pesquisar_livro(livros)
+        case 4:
+            funcionalidades.editar_livro(livros)
+        case 5:
+            funcionalidades.limpar_lista(livros)
+        case 6:
+            print("")
+            funcionalidades.erro1()
             funcionalidades.limpar_tela()
-            continue
+            inicio = False
+        case _:
+            print("")
+            funcionalidades.erro2()
 
-        match escolha_int:
-            case 1:
-                funcionalidades.adicionar_livros(livros)
-            case 2:
-                funcionalidades.listar_livros(livros)
-            case 3:
-                funcionalidades.pesquisar_livro(livros)
-            case 4:
-                funcionalidades.editar_livro(livros)
-            case 5:
-                funcionalidades.limpar_lista(livros)
-            case 6:
-                print("")
-                funcionalidades.erro1()
-                input("\nPressione ENTER para continuar...")
-                funcionalidades.limpar_tela()
-                inicio = False
-            case _:
-                print("")
-                funcionalidades.erro2()
-                input("\nPressione ENTER para continuar...")
-                funcionalidades.limpar_tela()
+            funcionalidades.limpar_tela()
 
     
             
