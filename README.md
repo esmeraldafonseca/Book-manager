@@ -21,6 +21,7 @@ It allows users to add, search, edit, and remove books, with data stored in a JS
 
 * Python 3
 * pandas
+* rich
 * JSON (data storage)
 
 ---
@@ -44,6 +45,12 @@ cd your-repo-name
 ```bash id="mznfyc"
 pip install pandas
 ```
+
+```bash id="mznfyc"
+pip install rich
+```
+
+Note: PyCharm users will need to enable “emulate terminal” in output console option in run/debug configuration to see styled output.
 
 ---
 
@@ -95,7 +102,8 @@ This project was developed to practice:
 * Data structures (lists and dictionaries)
 * Code modularization
 * Using pandas for data analysis and visualization
-
+* Using rich library for style
+  
 ---
 
 ## 📄 License
