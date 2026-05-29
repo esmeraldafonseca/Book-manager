@@ -1,9 +1,16 @@
 [
     {
-        "Titulo": "ww",
-        "Autor": "wsa",
-        "Ano de publicacao": 1990,
+        "Titulo": "Flores n\u00e3o s\u00e3o para os mortos",
+        "Autor": "Rosa Soares",
+        "Ano de publicacao": 2017,
         "Genero literario": "Romance",
+        "Estado": true
+    },
+    {
+        "Titulo": "A revolu\u00e7\u00e3o dos bichos",
+        "Autor": "George Orwell",
+        "Ano de publicacao": 1945,
+        "Genero literario": "Fabula",
         "Estado": true
     }
 ]

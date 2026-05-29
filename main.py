@@ -7,57 +7,67 @@ Descrição: Aplicação em Python para gerir uma coleção de livros com armaze
 
 import funcionalidades
 import ficheiro
+from rich import print
 import art #Arte ASCII
 
 
 inicio = True #flag variable
-opções = ["Adicionar livro", "Listar todos os livros", 
+OPCOES = ["Adicionar livro", "Listar todos os livros", 
           "Pesquisar livro por titulo", "Editar ", "Apagar lista" , "Sair"]
 livros = ficheiro.carregar_livros()
 
 
-funcionalidades.cabecalho("GESTOR DE LIVROS")
-print(art.art)
 
-print(f'Bem-vindo/a ao seu GESTOR DE LIVROS, escolha uma das opções abaixo.',)
+
+print(f'Bem-vindo/a ao seu GESTOR DE LIVROS::',)
+print(art.art)
 
 #Menu principal
 while inicio:
+    funcionalidades.cabecalho("GESTOR DE LIVROS")
     print("Escolha uma das opções:")
 
     #loop que mostra as opções do menu
-    for itens, elementos in enumerate(opções, start=1):
-        print(f'{itens}- {elementos}')
+    for itens, elementos in enumerate(OPCOES, start=1):
+        print(f'    {itens}- {elementos}')
+        
 
     escolha = input("Digite a sua escolha: ").strip()
 
-    if escolha == "":
-        print("ERROR.Campo vazio!")
-    else:
 
-        try:
-            escolha_int = int(escolha)
-        except ValueError:
-            print("ERROR! Valor invalido, por favor digite uma das opções validas(NUMEROS)")
-            continue
-        if escolha_int == 1:
+    try:
+        escolha_int = int(escolha)
+    except ValueError:
+        funcionalidades.erro3()
+        funcionalidades.limpar_tela()
+        continue
+
+    match escolha_int:
+        case 1:
             funcionalidades.adicionar_livros(livros)
-        elif escolha_int == 2:
+        case 2:
             funcionalidades.listar_livros(livros)
-        elif escolha_int == 3:
+        case 3:
             funcionalidades.pesquisar_livro(livros)
-        elif escolha_int == 4:
+        case 4:
             funcionalidades.editar_livro(livros)
-        elif escolha_int == 5:
+        case 5:
             funcionalidades.limpar_lista(livros)
-        elif escolha_int == 6:
+        case 6:
             print("")
-            print("Obrigado/a pela preferencia, tenha um bom dia e boa leitua.")
+            funcionalidades.erro1()
+            funcionalidades.limpar_tela()
             inicio = False
-        else:
+        case _:
             print("")
-            print("ERROR. Opção inexistente. Tente novamente ")
-    funcionalidades.limpar_tela()
+            funcionalidades.erro2()
+
+            funcionalidades.limpar_tela()
+
+    
+            
+
+
     
       
 

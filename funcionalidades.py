@@ -1,21 +1,51 @@
 import json
 import ficheiro
 import pandas as pd
+from rich import print
+from rich.panel import Panel
+from rich.table import Table
 from datetime import date
 
 livros = []
 ano_atual = date.today().year #Usa a biblioteca datatime para pegar o ano actual
-genero_literario = ["Romance", "Conto", "Novela", "Fabula", "Didatico"] 
+GENERO_LITERARIO = ["Romance", "Conto", "Novela", "Fabula", "Didatico"] 
 
+
+   
 
 def limpar_tela():
     """
-    Limpa a tela do terminal atraves do comando clean que é roddo diretamente no os
+    Limpa a tela do terminal atraves do comando clean que é rodado diretamente no os
     """
     import os
+
+    input("\nPressione ENTER para continuar...")
     os.system('clear')
 
+#Conjunto de funções que retornam mensagens de erros estilizadas
+def erro1():
+    CAIXA1 = Panel("[white]Obrigado/a pela preferencia, tenha um bom dia e boa leitua.[/] :gem_stone:", style="blue", width=30)
+    print(CAIXA1)
 
+def erro2():
+    CAIXA2 = Panel("[bold red]ERROR![/]. [white] Opção inexistente. Tente novamente [/]" , style="blue", width=30)
+    print(CAIXA2)
+
+def erro3():
+    CAIXA3 = Panel("[bold red]ERROR![/] [white] Valor invalido, por favor digite uma das opções validas([bold]NUMEROS[/])" , style="blue", width=30)
+    print(CAIXA3)
+
+def erro4():
+    CAIXA4 = Panel("[bold red]ERROR![/].[white]Campo vazio! Tente novamente.[/]" , style="blue", width=30)
+    print(CAIXA4)
+
+def campo_vazio(variavel):
+    """
+    Verifica de a variavel está vazia ou não e retorna uma mensagem de erro
+    Ideal para usar dentro de loops para validar dados
+    """
+    if not variavel:
+        erro4()
 
 def cabecalho(titulo):
     """
@@ -25,7 +55,7 @@ def cabecalho(titulo):
     titulo_cap = titulo.capitalize()
     print("*" * 56)
     print("*", end="")
-    print(f"{titulo_cap:^54}", end="")
+    print(f"[bold blue] {titulo_cap:^53}[/]", end="")
     print("*")
     print("*" * 56)
 
@@ -44,26 +74,44 @@ def adicionar_livros(livros):
     while inicio:
         limpar_tela()
         cabecalho("Adicionar livro")
-        titulo = input("Titulo do livro: ")
-        autor = input("Autor: ")
+
+
+        while True:
+
+            titulo = input("Titulo do livro: ").strip()
+            if not titulo:
+                erro4()
+            else:
+                break
+
+        while True:
+            autor = input("Autor: ").strip()
+            if not autor:
+                erro4()
+            else:
+                break
 
         
         while True:
-            ano_de_publicação = input("Ano de publicação: ")
-            if ano_de_publicação.isdigit() and len(ano_de_publicação) == 4:
+            ano_de_publicação = input("Ano de publicação: ").strip()
+            
+            
+
+            if ano_de_publicação.isdigit():
                 ano_de_publicação_int = int(ano_de_publicação)
-                if ano_de_publicação_int <= ano_atual:
+                if ano_de_publicação_int <= ano_atual and len(ano_de_publicação) == 4:
                     break     
                 else:
-                    print("ERRROR. Data invalidade!")         
+                    erro2()         
                 
             else:
-                print("ERROR. Valor invalido. Tente novamente.")
+                erro2()
                 
         
         while True:
 
             estado = input("Já leste esse livro?[S/N] ").upper()
+           
             if estado == "S":
                 lido = True
                 break
@@ -71,19 +119,40 @@ def adicionar_livros(livros):
                 lido = False
                 break
             else:
-                print("ERROR. Valor invalido. Tente S para sim e N para não")
+                erro2()
             
         
         while True:
             print("Genero literario:")
-            for i in genero_literario:
-                print(f"    -{i}")
-            genero = input("Digite a sua escolha: ").strip() .capitalize
-            if genero not in genero_literario:
-                print("ERROR. Opção invalida, tente uma das opções disponiveis.")
-            else:
-                genero = genero.title()
-                break
+            for indice, itens in enumerate (GENERO_LITERARIO, start=1):
+                print(f"    {indice} - {itens}")
+            genero = input("Digite a sua escolha: ").strip()
+            msg = Panel("[white]Livro adicionado com sucesso.[/]:gem_stone:", style="blue", width=30)
+            match genero:
+                case "1":
+                    genero="Romance"
+                    print(msg)
+                    break
+                case "2":
+                    genero = "Conto"
+                    print(msg)
+                    break
+                case "3":
+                    genero="Novela"
+                    print(msg)
+                    break
+                case "4":
+                    genero = "Fabula"
+                    print(msg)
+                    break
+                case "5":
+                    genero="Didatico"
+                    print(msg)
+                    break
+                case _:
+                    erro2()
+                    
+                
 
         livro ={"Titulo": titulo,
                     "Autor": autor,
@@ -97,14 +166,16 @@ def adicionar_livros(livros):
         
         while True: 
             condição = input("Quer adicionar mais um livro?[S/N]").upper()
-           
+            
             if condição == "S":
                 break
             elif condição == "N":
                 inicio = False
+                limpar_tela()
                 break
             else:
-                print("ERROR. Valor invalido. Tente S para sim e N para não")
+                erro3()
+
     
                  
 def limpar_lista(livros):
@@ -115,13 +186,31 @@ def limpar_lista(livros):
 
     limpar_tela()
     cabecalho("Limpar lista")
-    condicao = input("Tens a certeza que queres eliminar a tua lista de livros?\n Essa acção é IRRVERSIVEL[S/N]").upper()
-    
-    if condicao.strip() == "S":
-        livros.clear()
-        with open("livros.json", "w", encoding="utf-8") as ficheiro:
-            json.dump([], ficheiro, indent=4) #verficar se a lista já está vazia, caso sim informar ao usuario,
-    
+
+    if not livros:
+        print("Não ha livros para apagar. Tente adicionar primeiro.")
+        limpar_tela()
+        return
+    else:
+        print ("Essa acção é [bold]IRRVERSIVEL[/]!" )
+        while True:
+            condicao = input("Tens a certeza que queres eliminar a tua lista de livros?[S/N]: " ).upper()
+            
+            if condicao.strip() == "S":
+                livros.clear()
+                with open("livros.json", "w", encoding="utf-8") as ficheiro:
+                    json.dump([], ficheiro, indent=4) #verficar se a lista já está vazia, caso sim informar ao usuario,
+                limpar_tela()
+                break
+            
+                limpar_tela()
+            elif condicao.strip() == "N":
+                limpar_tela()
+                break
+        
+            else :
+                erro2()
+
 
 def editar_livro(livros):
     """
@@ -130,25 +219,30 @@ def editar_livro(livros):
     selecionar qual deseja editar.
     """
 
-    #Verifica se existem livros cadastrados
-    if not livros:
-        print("Não existem livros para editar.")
-        return
 
     limpar_tela()
     cabecalho("Editar livro")
 
+    #Verifica se existem livros cadastrados
+    if not livros:
+        print("Não existem livros para editar. Tente adicionar primeiro")
+        limpar_tela()
+        return
+
+
     #Mostra a lista numerada de livros
     print("Livros disponíveis:\n")
     for indice, livro in enumerate(livros, start=1):
-        print(f"{indice} - {livro['Titulo']} ({livro['Autor']})")
+        print(f"    {indice} - {livro['Titulo']} ({livro['Autor']})")
 
     #Solicita ao utilizador o número do livro a editar
     while True:
-        escolha = input("\nDigite o número do livro que deseja editar: ").strip()
+        escolha = input("\nDigite o número do livro que deseja editar: ")
 
         if not escolha.isdigit():
-            print("ERROR. Digite apenas números.")
+            erro3()
+
+
             continue
 
         escolha = int(escolha)
@@ -156,8 +250,8 @@ def editar_livro(livros):
         if 1 <= escolha <= len(livros):
             break
         else:
-            print("ERROR. Número inválido. Escolha um livro da lista.")
-
+            erro3()
+            
     #Obtém o livro selecionado
     livro = livros[escolha - 1]
 
@@ -180,7 +274,7 @@ def editar_livro(livros):
     ficheiro.criar_livro(livros)
 
     print("\nLivro atualizado com sucesso.")
-
+    limpar_tela()
 
 
 def pesquisar_livro(livros):
@@ -192,16 +286,39 @@ def pesquisar_livro(livros):
 
     limpar_tela()
     cabecalho("Pesquisar livro")
-    titulo = input(f"Digite o titulo do livro que pretendes encontrar: ").upper()
     encontrado = False
-    for livro in livros:
-        if titulo in livro["Titulo"].upper():
-            print(f"Livro encontrado: {livro["Titulo"]}")
-            encontrado = True
+    
+    if not livros:
+        print("Não existem livros. Tente adiciona primeiro.")
+        limpar_tela()
+        return
+    else:
 
-        if not encontrado:
-            print("Não existem livros. Adiciona primeiro.")
-            return
+        while True:
+            titulo = input(f"Digite o titulo do livro que pretendes encontrar: ").upper()
+
+            
+            
+            for livro in livros:
+                if titulo in livro["Titulo"].upper():
+                    print(f"Livro encontrado:\n     {livro['Titulo']} de {livro['Autor']} lançado em {livro['Ano de publicacao']}")
+                    continue
+                else:
+                    print("Livro não encontrado.")
+
+                    
+                
+            condicao = input("Quer pesquisar mais algum livro[S/N]?: ").upper() .strip()
+            if condicao== "S":
+                continue
+            elif condicao =="N":
+                limpar_tela()
+                break
+            else:
+                erro2()
+
+
+    
 
        
 def listar_livros(livros):
@@ -213,9 +330,26 @@ def listar_livros(livros):
 
     limpar_tela()
     cabecalho("Listar livros")
-    print(f'Os seus livros sao:')
-    tabela = pd.DataFrame(livros)
-    return print("\n"* 5, tabela, "\n"*10)
+
+    if not livros:
+        print("Não existem livros cadastrados. Tente adicionar primeiro.")
+        limpar_tela()
+        return
+
+    df = pd.DataFrame(livros)
+
+    table = Table(title="Livros")
+
+    for coluna in df.columns:
+        table.add_column(coluna)
+
+    for _, linha in df.iterrows():
+        table.add_row(*[str(valor) for valor in linha])
+
+    print(table)
+
+    limpar_tela()
+        
 
 
     
