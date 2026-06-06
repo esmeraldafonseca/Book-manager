@@ -19,8 +19,9 @@ livros = ficheiro.carregar_livros()
 
 
 
-print(f'Bem-vindo/a ao seu GESTOR DE LIVROS::',)
 print(art.art)
+print(f'Bem-vindo/a ao seu GESTOR DE LIVROS',)
+
 
 #Menu principal
 while inicio:
@@ -64,10 +65,9 @@ while inicio:
 
             funcionalidades.limpar_tela()
 
+
     
             
 
-
-    
       
 

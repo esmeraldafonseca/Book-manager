@@ -111,7 +111,7 @@ def adicionar_livros(livros):
         while True:
 
             estado = input("Já leste esse livro?[S/N] ").upper()
-           
+        
             if estado == "S":
                 lido = True
                 break
@@ -152,7 +152,6 @@ def adicionar_livros(livros):
                 case _:
                     erro2()
                     
-                
 
         livro ={"Titulo": titulo,
                     "Autor": autor,
@@ -166,7 +165,6 @@ def adicionar_livros(livros):
         
         while True: 
             condição = input("Quer adicionar mais um livro?[S/N]").upper()
-            
             if condição == "S":
                 break
             elif condição == "N":
@@ -351,5 +349,3 @@ def listar_livros(livros):
     limpar_tela()
         
 
-
-    
