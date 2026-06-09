@@ -13,7 +13,7 @@ import art #Arte ASCII
 
 inicio = True #flag variable
 OPCOES = ["Adicionar livro", "Listar todos os livros", 
-          "Pesquisar livro por titulo", "Editar ", "Apagar lista" , "Sair"]
+          "Pesquisar livro por titulo", "Editar ", "Apagar livro" , "Sair"]
 livros = ficheiro.carregar_livros()
 
 
