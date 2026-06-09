@@ -12,6 +12,10 @@ GENERO_LITERARIO = ["Romance", "Conto", "Novela", "Fabula", "Didatico"]
 
 
    
+def mostrar_lista(livros):
+        print("Livros disponíveis:\n")
+        for indice, livro in enumerate(livros, start=1):
+            print(f"    {indice} - {livro['Titulo']} ({livro['Autor']})")
 
 def limpar_tela():
     """
@@ -228,10 +232,7 @@ def editar_livro(livros):
         return
 
 
-    #Mostra a lista numerada de livros
-    print("Livros disponíveis:\n")
-    for indice, livro in enumerate(livros, start=1):
-        print(f"    {indice} - {livro['Titulo']} ({livro['Autor']})")
+    mostrar_lista(livros)
 
     #Solicita ao utilizador o número do livro a editar
     while True:
