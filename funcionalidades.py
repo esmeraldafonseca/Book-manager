@@ -276,45 +276,45 @@ def editar_livro(livros):
 
 
 def pesquisar_livro(livros):
-    """
-    Argumento: lista/ dicionario/ tupla
-    Pergunta ao usuaria o titulo do livro que pretende encontrar e caso
-    esse titulo exitas, retorna uma lista com os restantes dados do livro em questão
-    """
 
     limpar_tela()
     cabecalho("Pesquisar livro")
-    encontrado = False
-    
+
     if not livros:
-        print("Não existem livros. Tente adiciona primeiro.")
+        print("Não existem livros. Tente adicionar primeiro.")
         limpar_tela()
         return
-    else:
 
-        while True:
-            titulo = input(f"Digite o titulo do livro que pretendes encontrar: ").upper()
+    while True:
+        titulo = input(
+            "Digite o título do livro que pretendes encontrar: "
+        ).upper().strip()
 
-            
-            
-            for livro in livros:
-                if titulo in livro["Titulo"].upper():
-                    print(f"Livro encontrado:\n     {livro['Titulo']} de {livro['Autor']} lançado em {livro['Ano de publicacao']}")
-                    continue
-                else:
-                    print("Livro não encontrado.")
+        encontrado = False
 
-                    
-                
-            condicao = input("Quer pesquisar mais algum livro[S/N]?: ").upper() .strip()
-            if condicao== "S":
-                continue
-            elif condicao =="N":
-                limpar_tela()
-                break
-            else:
-                erro2()
+        for livro in livros:
+            if titulo in livro["Titulo"].upper():
+                print(
+                    f"\nLivro encontrado:\n"
+                    f"     {livro['Titulo']} de {livro['Autor']} "
+                    f"lançado em {livro['Ano de publicacao']}"
+                )
+                encontrado = True
 
+        if not encontrado:
+            print("Livro não encontrado.")
+
+        condicao = input(
+            "\nQuer pesquisar mais algum livro [S/N]?: "
+        ).upper().strip()
+
+        if condicao == "S":
+            continue
+        elif condicao == "N":
+            limpar_tela()
+            break
+        else:
+            erro2()
 
     
 
