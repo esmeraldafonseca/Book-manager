@@ -214,7 +214,7 @@ def limpar_lista(livros):
                             livros.clear()
                             with open("livros.json", "w", encoding="utf-8") as ficheiro:
                                 json.dump([], ficheiro, indent=4) #verficar se a lista já está vazia, caso sim informar ao usuario,
-                            limpar_tela()
+                            
                             break
                         
                         elif condicao.strip() == "N":
@@ -254,7 +254,6 @@ def limpar_lista(livros):
                                 flag = False
                                 break
                             elif continuar == "N":
-                                limpar_tela()
                                 flag = False
                                 T=False
                                 break
