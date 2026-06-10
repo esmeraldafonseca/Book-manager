@@ -186,77 +186,84 @@ def limpar_lista(livros):
     Retorna uma lista vazia
     """
     OPCOES = ["Apagar todos os livros", "Apagar livro"]
-    limpar_tela()
-    cabecalho("Limpar lista")
 
-    if not livros:
-        print("Não ha livros para apagar. Tente adicionar primeiro.")
+    T=True
+    while T:
         limpar_tela()
-        return
-    else:
+        cabecalho("Limpar lista")
+        if not livros:
+            print("Não ha livros para apagar. Tente adicionar primeiro.")
+            limpar_tela()
+            return
+        else:
 
-        for itens, elementos in enumerate(OPCOES, start=1):
-            print(f'    {itens}- {elementos}')
-        
-        opcao = input("Digite a sua escolha: ").strip()
+            for itens, elementos in enumerate(OPCOES, start=1):
+                print(f'    {itens}- {elementos}')
+            
+            opcao = input("Digite a sua escolha: ").strip()
 
-        match opcao:
-            case "1":
-                limpar_tela()
-                cabecalho("Limpar lista")
-                print ("Essa acção é [bold]IRRVERSIVEL[/]!" )
-                while True:
-                    condicao = input("Tens a certeza que queres eliminar a tua lista de livros?[S/N]: " ).upper()
-                    
-                    if condicao.strip() == "S":
-                        livros.clear()
-                        with open("livros.json", "w", encoding="utf-8") as ficheiro:
-                            json.dump([], ficheiro, indent=4) #verficar se a lista já está vazia, caso sim informar ao usuario,
-                        limpar_tela()
-                        break
-                    
-                    elif condicao.strip() == "N":
-                        limpar_tela()
-                        break
-                
-                    else :
-                        erro2()
-            case "2":
-                
-                flag =True
-                while flag:
+            match opcao:
+                case "1":
                     limpar_tela()
                     cabecalho("Limpar lista")
-                    mostrar_lista(livros)
-                    escolha = input("\nDigite o número do livro que deseja eliminar: ")
-                    if not escolha.isdigit():
-                        erro3()
-                        continue
-                    if not escolha:
-                        erro2()
-
-                    escolha = int(escolha)
-                    livros.pop(escolha -1)
-
-                    
-                    with open("livros.json", "w", encoding="utf-8") as f:
-                        json.dump(livros, f, indent=4)
-                    print(f"Livro removido com sucesso")
-
-                    while True:    
-                        continuar = input("Quer eliminar mais um livro?[S/N]").upper()
-                        if continuar == "S":
-                            break
-                        elif continuar == "N":
+                    print ("Essa acção é [bold]IRRVERSIVEL[/]!" )
+                    while True:
+                        condicao = input("Tens a certeza que queres eliminar a tua lista de livros?[S/N]: " ).upper()
+                        
+                        if condicao.strip() == "S":
+                            livros.clear()
+                            with open("livros.json", "w", encoding="utf-8") as ficheiro:
+                                json.dump([], ficheiro, indent=4) #verficar se a lista já está vazia, caso sim informar ao usuario,
                             limpar_tela()
-                            flag = False
                             break
-                        else:
+                        
+                        elif condicao.strip() == "N":
+                            break
+                    
+                        else :
+                            erro2()
+                case "2":
+                    
+                    flag =True
+                    while flag:
+                        limpar_tela()
+                        cabecalho("Limpar lista")
+                        mostrar_lista(livros)
+                        escolha = input("\nDigite o número do livro que deseja eliminar: ")
+                        if not escolha.isdigit():
                             erro3()
+                            continue
+                        elif not escolha:
+                            erro2()
+                        
 
-            case _:
-                erro2()
-                return
+                        escolha = int(escolha)
+                        if escolha < 1 or escolha > len(livros):
+                            erro2()
+                            continue
+                        livros.pop(escolha -1)
+
+                        
+                        with open("livros.json", "w", encoding="utf-8") as f:
+                            json.dump(livros, f, indent=4)
+                        print(f"\n[bold]Livro removido com sucesso[/]")
+
+                        while True:    
+                            continuar = input("\nQuer eliminar mais um livro?[S/N]").upper()
+                            if continuar == "S":
+                                flag = False
+                                break
+                            elif continuar == "N":
+                                limpar_tela()
+                                flag = False
+                                T=False
+                                break
+                            else:
+                                erro3()
+
+                case _:
+                    erro2()
+                    continue
         
 
 
